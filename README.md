@@ -1,13 +1,93 @@
-```mermaid
-graph TD;
-  Employee((Employee)) -- works in --> Department((Department))
-  Employee((Employee)) -- reports to --> Employee((Employee))
-  Employee((Employee)) -- has payroll --> Payroll((Payroll))
-  Employee((Employee)) -- has performance review --> Performance((Performance))
-  Employee((Employee)) -- has attendance record --> Attendance((Attendance))
-  Department((Department)) -- has job positions --> Job((Job))
-  Training((Training)) -- required for --> Employee((Employee))
-  Payroll((Payroll)) -- paid to --> Employee((Employee))
-  Performance((Performance)) -- reviewed --> Employee((Employee))
-  Leave((Leave)) -- requested by --> Employee((Employee))
-  Attendance((Attendance)) -- recorded for --> Employee((Employee))
+@startuml
+class Employee {
+  -id : Long
+  -firstName : String
+  -lastName : String
+  -email : String
+  -phone : String
+  -address : String
+  -birthDate : Date
+  -gender : String
+  -hireDate : Date
+  -jobTitle : String
+  -departmentId : Long
+  -managerId : Long
+  -salary : Double
+  -active : boolean
+  -terminationDate : Date
+  -terminationReason : String
+}
+
+class Department {
+  -id : Long
+  -name : String
+  -managerId : Long
+}
+
+class Job {
+  -id : Long
+  -title : String
+  -description : String
+  -salaryMin : Double
+  -salaryMax : Double
+}
+
+class Training {
+  -id : Long
+  -name : String
+  -description : String
+  -startDate : Date
+  -endDate : Date
+  -employeeIds : List<Long>
+}
+
+class Payroll {
+  -id : Long
+  -employeeId : Long
+  -payPeriodStartDate : Date
+  -payPeriodEndDate : Date
+  -grossPay : Double
+  -taxes : Double
+  -netPay : Double
+}
+
+class Performance {
+  -id : Long
+  -employeeId : Long
+  -reviewDate : Date
+  -reviewer : String
+  -rating : int
+  -comments : String
+  -goals : List<String>
+}
+
+class Leave {
+  -id : Long
+  -employeeId : Long
+  -leaveType : String
+  -startDate : Date
+  -endDate : Date
+  -status : String
+}
+
+class Attendance {
+  -id : Long
+  -employeeId : Long
+  -date : Date
+  -clockInTime : Time
+  -clockOutTime : Time
+  -status : String
+}
+
+Employee -- Department : works in
+Employee -- Employee : reports to
+Employee -- Payroll : has payroll
+Employee -- Performance : has performance review
+Employee -- Attendance : has attendance record
+Department -- Job : has job positions
+Training -- Employee : required for training
+Payroll -- Employee : paid to
+Performance -- Employee : reviewed
+Leave -- Employee : requested by
+Attendance -- Employee : recorded for
+@enduml
